@@ -1,0 +1,7 @@
+{
+  "name": "Fondos",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
