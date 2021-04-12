@@ -1,0 +1,150 @@
+import { Component, OnInit } from '@angular/core';
+import { AlertController,ModalController, ToastController } from '@ionic/angular';
+import {ImportModalPage} from '../import-modal/import-modal.page';
+import { TransaccionService } from '../Services/transaccion.service';
+import { TransaccionI } from '../transaccion-i';
+
+
+
+@Component({
+  selector: 'app-modificaciones',
+  templateUrl: './modificaciones.page.html',
+  styleUrls: ['./modificaciones.page.scss'],
+})
+export class ModificacionesPage implements OnInit {
+  aEliminar;
+  Movimiento:TransaccionI;
+  constructor(public alertController:AlertController,
+    public modalController:ModalController,
+    public toastController:ToastController,
+    public transaccion:TransaccionService) { }
+
+  ngOnInit() {
+    this.Movimiento=this.transaccion.obtenerMovimiento();
+  }
+
+  async deleteAll(){
+
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Precaución',
+     
+      message: '¿Seguro que desea eliminar todo?',
+      buttons: [
+        {
+          text:'Cancel',
+          role:'cancel',
+          cssClass:'secondary',
+
+        },
+        {
+          text:'Yes',
+          handler: () => {
+            localStorage.clear();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+
+
+
+   
+  }
+
+  async Importar(){
+    const modal=await this.modalController.create({
+      component:ImportModalPage,
+      cssClass:'my-custom-class'
+    });
+    modal.onDidDismiss().then(async (dataReturned) => {
+      if (dataReturned !== null && dataReturned!="") {
+        const confirmacion = await this.alertController.create({
+          cssClass: 'my-custom-class',
+          header: 'Precaución',
+          subHeader:'¿Seguro que desea importar?',
+          message: 'se eliminaran los datos existentes',
+          buttons: [
+            {
+              text:'Cancel',
+              role:'cancel',
+              cssClass:'secondary',
+    
+            },
+            {
+              text:'Yes',
+              handler: () => {
+                //console.log(dataReturned.data.data);
+                localStorage.setItem("abonos",dataReturned.data.data);
+              }
+            }
+          ]
+        });
+    
+        await confirmacion.present();
+      }
+
+    });
+    return await modal.present();
+    
+  }
+
+ async exportar(){
+
+    if(localStorage.getItem("abonos")!=null){
+    (<HTMLInputElement>document.getElementById("ExportarData")).appendChild(document.createTextNode(localStorage.getItem("abonos")));
+
+  let input=(<HTMLInputElement>document.getElementById("ExportarData"));
+  input.classList.remove("ion-hide");
+  let btn=(<HTMLInputElement>document.getElementById("BtnOcultar"));
+  btn.classList.remove("ion-hide");
+
+
+    try{
+      var successful = document.execCommand('copy');
+      if(successful){
+        const toast = await this.toastController.create({
+          message: 'Texto Copiado',
+          duration: 2000
+        });
+        toast.present();
+      }else{
+        const toast = await this.toastController.create({
+          message: 'Imposible Exportar',
+          duration: 2000
+        });
+        toast.present();
+      }
+  } catch (err) {
+    const toast = await this.toastController.create({
+      message: 'No soporta el exportar',
+      duration: 2000
+    });
+    toast.present();
+  }
+  }
+}
+Ocultar(){
+  let input=(<HTMLInputElement>document.getElementById("ExportarData"));
+  input.classList.add("ion-hide");
+  let btn=(<HTMLInputElement>document.getElementById("BtnOcultar"));
+btn.classList.add("ion-hide");
+
+}
+
+EliminarMovimiento(){
+  document.getElementById("EliminarMovimiento").classList.toggle("ion-hide");
+  this.Movimiento=this.transaccion.obtenerMovimiento();
+  
+}
+Eliminar(){
+  console.log(this.aEliminar);
+  this.Movimiento.saldo=this.Movimiento.saldo+this.Movimiento.gastos[this.aEliminar].monto;
+  this.Movimiento.gastos.splice(this.aEliminar,1);
+
+  this.transaccion.EliminarMovimiento(this.Movimiento);
+  document.getElementById("EliminarMovimiento").classList.toggle("ion-hide");
+}
+  
+}

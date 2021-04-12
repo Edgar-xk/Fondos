@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Modificaciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button expand="full" color="primary" (click)="exportar()">Exportar</ion-button>
+  <ion-button expand="full" color="success" (click)="Importar()">Importar</ion-button>
+  <ion-button expand="full" color="warning" (click)="EliminarMovimiento()">Eliminar Movimiento </ion-button>
+  <ion-button expand="full" color="danger" (click)="deleteAll()">Borrar Todo </ion-button>
+
+  <textarea id="ExportarData" class="ion-hide" type="text"></textarea>
+  <ion-button expand="full"  class="ion-hide" color="danger" (click)="Ocultar()" id="BtnOcultar">Ocultar</ion-button>
+
+  <ion-item id="EliminarMovimiento" class="ion-hide">
+    <ion-label>Concepto</ion-label>
+    <ion-select placeholder="Select One" [(ngModel)]="aEliminar">
+      <ion-select-option *ngFor="let Concepto of Movimiento.gastos; index as i" value="{{i}}">{{Concepto.concepto}} -- {{Concepto.monto}}</ion-select-option>
+     
+    </ion-select>
+    <ion-button (click)="Eliminar()">Eliminar </ion-button>
+  </ion-item>
+
+
+</ion-content>

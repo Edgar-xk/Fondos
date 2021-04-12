@@ -1,0 +1,32 @@
+[
+    {
+        "fecha": "3/2/2021",
+        "deposito": 2000,
+        "NoDisponible": 2000,
+        "gastos": [],
+        "saldo": 0
+    },
+    {
+        "fecha": "3/2/2021",
+        "deposito": 2500,
+        "NoDisponible": 1000,
+        "gastos": [
+            {
+                "concepto": "Mamilu",
+                "monto": 750
+            },
+            {
+                "concepto": "gasolina",
+                "monto": 400
+            }
+        ],
+        "saldo": 0
+    },
+    {
+        "fecha": "1/3/2021",
+        "deposito": 1600,
+        "NoDisponible": 0,
+        "gastos": [],
+        "saldo": 1600
+    }
+]

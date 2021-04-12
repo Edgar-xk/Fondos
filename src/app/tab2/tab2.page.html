@@ -1,17 +1,51 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 2
+      Movimientos
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+
+  <ion-card>
+    <ion-item>
+      <ion-input type="number" placeholder="Cantidad" [(ngModel)]="cantidad"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input type="text" placeholder="Concepto" [(ngModel)]="concepto"></ion-input>
+    </ion-item>
+  </ion-card>
+
+  <ion-item><ion-toggle color="primary" [(ngModel)]="descuento"></ion-toggle>Realizar descuento</ion-item>
+  
+
+  <ion-button expand="full" color="success" (click)="agregarPago()">
+    Agregar Pago
+  </ion-button>
+
+  <ion-button expand="full" color="danger" (click)="registrarGasto()">
+    Registrar Gasto
+  </ion-button>
+
+
+
+  <ion-card *ngIf="banderaAbono" class="abajo">
+    <ion-item color="success">
+      <ion-label>{{texto}}</ion-label>
+      <ion-button fill="clear" (click)="cerrar(1)">
+        <ion-icon name="close-outline" color="dark"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-card>
+  <ion-card *ngIf="banderaGasto" class="abajo">
+    <ion-item color="danger">
+      <ion-label>{{texto}}</ion-label>
+      <ion-button fill="clear" (click)="cerrar(2)">
+        <ion-icon name="close-outline" color="dark"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-card>
+
 </ion-content>
