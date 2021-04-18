@@ -5,7 +5,10 @@
 </ion-header>
 
 <ion-content>
-  <ion-button expand="full" color="primary" (click)="exportar()">Exportar</ion-button>
+  
+  <ion-button expand="full" color="primary" (click)="VerAhorroEspecial()">Ver Ahorro especial</ion-button>
+  <ion-button expand="full" color="primary" (click)="EditarDescuento()">Editar descuento</ion-button>
+  <ion-button expand="full" color="success" (click)="exportar()">Exportar</ion-button>
   <ion-button expand="full" color="success" (click)="Importar()">Importar</ion-button>
   <ion-button expand="full" color="warning" (click)="EliminarMovimiento()">Eliminar Movimiento </ion-button>
   <ion-button expand="full" color="danger" (click)="deleteAll()">Borrar Todo </ion-button>
@@ -16,11 +19,15 @@
   <ion-item id="EliminarMovimiento" class="ion-hide">
     <ion-label>Concepto</ion-label>
     <ion-select placeholder="Select One" [(ngModel)]="aEliminar">
-      <ion-select-option *ngFor="let Concepto of Movimiento.gastos; index as i" value="{{i}}">{{Concepto.concepto}} -- {{Concepto.monto}}</ion-select-option>
+      <ion-select-option *ngFor="let Concepto of Movimiento.gastos; index as i" value="{{i}}" >{{Concepto.concepto}} -- {{Concepto.monto}}</ion-select-option>
      
     </ion-select>
     <ion-button (click)="Eliminar()">Eliminar </ion-button>
   </ion-item>
 
+  <ion-item id="EditarDescuento" class="ion-hide">
+    <ion-input placeholder="Cantidad a descontar" type="number" [(ngModel)]="aDescontar"></ion-input>
+    <ion-button (click)="GuardarDesucento()">Guardar </ion-button>
+  </ion-item>
 
 </ion-content>

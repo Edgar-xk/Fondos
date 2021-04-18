@@ -28,6 +28,7 @@ export class Tab2Page {
     this.abono=this.transaccion.obtenerMovimiento()!=void(0)?this.transaccion.obtenerMovimiento().saldo:0;
   }
   agregarPago() {
+    let aDescontar:number=localStorage.getItem("aDescontar")!=null?parseInt(localStorage.getItem("aDescontar")):1000;
     if(this.banderaGasto){
       this.banderaGasto=false;
     }
@@ -36,10 +37,17 @@ export class Tab2Page {
      
 
       this.abono = this.cantidad;
-      this.texto = "Se agregarón $" + this.abono+(this.descuento?" y se descontaron $1000":"");
+      this.texto = "Se agregarón $" + this.abono+(this.descuento?" y se descontaron $"+aDescontar:"");
       
+      let concepto:string;
+      if(this.concepto!=""){
+        concepto=this.concepto
+      }else{
+        concepto="";
+      }
+
       this.banderaAbono=true;
-      this.transaccion.realizarAbono(this.abono,this.descuento);
+      this.transaccion.realizarAbono(this.abono,this.descuento,concepto);
     }else{
       this.abono=0;
       this.banderaAbono=false;
@@ -94,4 +102,10 @@ export class Tab2Page {
     }
   }
 
+  registrarAhorro(){
+    if(this.cantidad>0){
+      this.transaccion.registrarAhorroEspecial(this.cantidad);
+    }
+    
+  }
 }

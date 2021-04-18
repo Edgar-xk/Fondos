@@ -25,7 +25,7 @@
     <tbody *ngIf="movimientos!=null">
       <tr class="reglon"  *ngFor="let transaccion of movimientos">
         <td>{{transaccion.fecha}}</td>
-        <td>${{transaccion.deposito}}</td>
+        <td (click)="VerConcepto(transaccion)">${{transaccion.deposito}}</td>
         <td>${{transaccion.NoDisponible}}</td>
         <td>
           <app-movimientos *ngFor="let movimiento of transaccion.gastos" [info]="movimiento"></app-movimientos>

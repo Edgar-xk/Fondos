@@ -11,7 +11,8 @@ export class TransaccionService {
   constructor() { }
 
 
-  realizarAbono(abono: number, descuento: Boolean) {
+  realizarAbono(abono: number, descuento: Boolean,concepto:string) {
+    let aDescontar:number=localStorage.getItem("aDescontar")!=null?parseInt(localStorage.getItem("aDescontar")):1000;
     console.clear();
     let fechaS = new Date();
     let fechaFormat: string = fechaS.getDay() + "/" + fechaS.getMonth() + "/" + fechaS.getFullYear();
@@ -19,7 +20,7 @@ export class TransaccionService {
 
     let abonos: TransaccionI[] = this.obtenerMovimientos()
     let saldoSuma;
-    let saldoNuevo = descuento ? abono - 1000 : abono;
+    let saldoNuevo = descuento ? abono - aDescontar : abono;
     if (abonos.length != 0) {
       saldoSuma = abonos[abonos.length - 1].saldo;
       
@@ -33,9 +34,10 @@ export class TransaccionService {
 
 
     let abonoNuevo: TransaccionIN = {
+      concepto:concepto,
       fecha: fechaFormat,
       deposito: abono,
-      NoDisponible: descuento ? 1000 : 0,
+      NoDisponible: descuento ? aDescontar : 0,
       gastos: [],
       saldo: saldoSuma
     }
@@ -115,5 +117,36 @@ export class TransaccionService {
     }
   }
 
+  registrarAhorroEspecial(cantidad:number){
+
+    if(localStorage.getItem("AhorroEspecial")!=null){
+      let AhorroEspecial:number=parseInt(localStorage.getItem("AhorroEspecial"));
+      AhorroEspecial+=cantidad;
+      localStorage.setItem("AhorroEspecial",JSON.stringify(AhorroEspecial));
+            
+      
+    }else{
+      let AhorroEspecial:number=cantidad;
+      localStorage.setItem("AhorroEspecial",JSON.stringify(AhorroEspecial));
+    }
+    this.ActualizarMovimiento(cantidad,"AhorroEspecial");
+  }
+
+  VerAhorroEspecial(){
+    if(localStorage.getItem("AhorroEspecial")!=null){
+      return parseInt(localStorage.getItem("AhorroEspecial"));
+    }else{
+      return 0;
+    }
+  }
+  DescontarAhorroEspecial(cantidad:number){
+    if(localStorage.getItem("AhorroEspecial")!=null){
+      let AhorroEspecial:number=parseInt(localStorage.getItem("AhorroEspecial"));
+      AhorroEspecial-=cantidad;
+      localStorage.setItem("AhorroEspecial",JSON.stringify(AhorroEspecial));
+            
+      
+    }
+  }
 
 }

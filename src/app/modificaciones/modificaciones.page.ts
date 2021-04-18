@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController,ModalController, ToastController } from '@ionic/angular';
-import {ImportModalPage} from '../import-modal/import-modal.page';
+import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { ImportModalPage } from '../import-modal/import-modal.page';
 import { TransaccionService } from '../Services/transaccion.service';
 import { TransaccionI } from '../transaccion-i';
 
@@ -13,32 +13,33 @@ import { TransaccionI } from '../transaccion-i';
 })
 export class ModificacionesPage implements OnInit {
   aEliminar;
-  Movimiento:TransaccionI;
-  constructor(public alertController:AlertController,
-    public modalController:ModalController,
-    public toastController:ToastController,
-    public transaccion:TransaccionService) { }
+  aDescontar:number;
+  Movimiento: TransaccionI;
+  constructor(public alertController: AlertController,
+    public modalController: ModalController,
+    public toastController: ToastController,
+    public transaccion: TransaccionService) { }
 
   ngOnInit() {
-    this.Movimiento=this.transaccion.obtenerMovimiento();
+    this.Movimiento = this.transaccion.obtenerMovimiento();
   }
 
-  async deleteAll(){
+  async deleteAll() {
 
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Precaución',
-     
+
       message: '¿Seguro que desea eliminar todo?',
       buttons: [
         {
-          text:'Cancel',
-          role:'cancel',
-          cssClass:'secondary',
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
 
         },
         {
-          text:'Yes',
+          text: 'Yes',
           handler: () => {
             localStorage.clear();
           }
@@ -50,101 +51,134 @@ export class ModificacionesPage implements OnInit {
 
 
 
-   
+
   }
 
-  async Importar(){
-    const modal=await this.modalController.create({
-      component:ImportModalPage,
-      cssClass:'my-custom-class'
+  async Importar() {
+    const modal = await this.modalController.create({
+      component: ImportModalPage,
+      cssClass: 'my-custom-class'
     });
     modal.onDidDismiss().then(async (dataReturned) => {
-      if (dataReturned !== null && dataReturned!="") {
+      if (dataReturned !== null && dataReturned != "") {
         const confirmacion = await this.alertController.create({
           cssClass: 'my-custom-class',
           header: 'Precaución',
-          subHeader:'¿Seguro que desea importar?',
+          subHeader: '¿Seguro que desea importar?',
           message: 'se eliminaran los datos existentes',
           buttons: [
             {
-              text:'Cancel',
-              role:'cancel',
-              cssClass:'secondary',
-    
+              text: 'Cancel',
+              role: 'cancel',
+              cssClass: 'secondary',
+
             },
             {
-              text:'Yes',
+              text: 'Yes',
               handler: () => {
                 //console.log(dataReturned.data.data);
-                localStorage.setItem("abonos",dataReturned.data.data);
+                localStorage.setItem("abonos", dataReturned.data.data);
               }
             }
           ]
         });
-    
+
         await confirmacion.present();
       }
 
     });
     return await modal.present();
-    
+
   }
 
- async exportar(){
+  async exportar() {
 
-    if(localStorage.getItem("abonos")!=null){
-    (<HTMLInputElement>document.getElementById("ExportarData")).appendChild(document.createTextNode(localStorage.getItem("abonos")));
+    if (localStorage.getItem("abonos") != null) {
+      (<HTMLInputElement>document.getElementById("ExportarData")).appendChild(document.createTextNode(localStorage.getItem("abonos")));
 
-  let input=(<HTMLInputElement>document.getElementById("ExportarData"));
-  input.classList.remove("ion-hide");
-  let btn=(<HTMLInputElement>document.getElementById("BtnOcultar"));
-  btn.classList.remove("ion-hide");
+      let input = (<HTMLInputElement>document.getElementById("ExportarData"));
+      input.classList.remove("ion-hide");
+      let btn = (<HTMLInputElement>document.getElementById("BtnOcultar"));
+      btn.classList.remove("ion-hide");
 
 
-    try{
-      var successful = document.execCommand('copy');
-      if(successful){
+      try {
+        var successful = document.execCommand('copy');
+        if (successful) {
+          const toast = await this.toastController.create({
+            message: 'Texto Copiado',
+            duration: 2000
+          });
+          toast.present();
+        } else {
+          const toast = await this.toastController.create({
+            message: 'Imposible Exportar',
+            duration: 2000
+          });
+          toast.present();
+        }
+      } catch (err) {
         const toast = await this.toastController.create({
-          message: 'Texto Copiado',
-          duration: 2000
-        });
-        toast.present();
-      }else{
-        const toast = await this.toastController.create({
-          message: 'Imposible Exportar',
+          message: 'No soporta el exportar',
           duration: 2000
         });
         toast.present();
       }
-  } catch (err) {
-    const toast = await this.toastController.create({
-      message: 'No soporta el exportar',
-      duration: 2000
+    }
+  }
+  Ocultar() {
+    let input = (<HTMLInputElement>document.getElementById("ExportarData"));
+    input.classList.add("ion-hide");
+    let btn = (<HTMLInputElement>document.getElementById("BtnOcultar"));
+    btn.classList.add("ion-hide");
+
+  }
+
+  EliminarMovimiento() {
+    document.getElementById("EliminarMovimiento").classList.toggle("ion-hide");
+    this.Movimiento = this.transaccion.obtenerMovimiento();
+
+  }
+  Eliminar() {
+    console.log(this.aEliminar);
+
+    if(this.Movimiento.gastos[this.aEliminar].concepto=="AhorroEspecial"){
+      this.transaccion.DescontarAhorroEspecial(this.Movimiento.gastos[this.aEliminar].monto);
+    }
+    this.Movimiento.saldo = this.Movimiento.saldo + this.Movimiento.gastos[this.aEliminar].monto;
+    this.Movimiento.gastos.splice(this.aEliminar, 1);
+
+    this.transaccion.EliminarMovimiento(this.Movimiento);
+    document.getElementById("EliminarMovimiento").classList.toggle("ion-hide");
+  }
+
+  async VerAhorroEspecial() {
+
+    let AhorroEspecial:number=this.transaccion.VerAhorroEspecial();
+    const confirmacion = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Ahorro especial',
+      subHeader: "",
+      message: "$"+AhorroEspecial,
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'cancel',
+          cssClass: 'secondary',
+
+        }
+      ]
     });
-    toast.present();
+
+    await confirmacion.present();
   }
+  EditarDescuento(){
+    document.getElementById("EditarDescuento").classList.toggle("ion-hide");
   }
-}
-Ocultar(){
-  let input=(<HTMLInputElement>document.getElementById("ExportarData"));
-  input.classList.add("ion-hide");
-  let btn=(<HTMLInputElement>document.getElementById("BtnOcultar"));
-btn.classList.add("ion-hide");
+  GuardarDesucento(){
+    
+    localStorage.setItem("aDescontar",JSON.stringify(this.aDescontar));
+    this.aDescontar=0;
+  }
 
-}
-
-EliminarMovimiento(){
-  document.getElementById("EliminarMovimiento").classList.toggle("ion-hide");
-  this.Movimiento=this.transaccion.obtenerMovimiento();
-  
-}
-Eliminar(){
-  console.log(this.aEliminar);
-  this.Movimiento.saldo=this.Movimiento.saldo+this.Movimiento.gastos[this.aEliminar].monto;
-  this.Movimiento.gastos.splice(this.aEliminar,1);
-
-  this.transaccion.EliminarMovimiento(this.Movimiento);
-  document.getElementById("EliminarMovimiento").classList.toggle("ion-hide");
-}
-  
 }

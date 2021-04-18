@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import {TransaccionService} from '../Services/transaccion.service';
+import { AlertController } from '@ionic/angular';
+import { TransaccionService } from '../Services/transaccion.service';
+import { TransaccionI } from '../transaccion-i';
+import { TransaccionIN } from '../transaccion-in';
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
@@ -8,16 +11,16 @@ import {TransaccionService} from '../Services/transaccion.service';
 export class Tab3Page {
 
   movimientos;
-  saldoTotal:number;
-  totalNoDisponible:number;
-  constructor(public transaccion:TransaccionService) {
-    this.movimientos=[];
+  saldoTotal: number;
+  totalNoDisponible: number;
+  constructor(public transaccion: TransaccionService,public alertController: AlertController) {
+    this.movimientos = [];
 
   }
-  ngOnInit(){
-    this.totalNoDisponible=this.transaccion.totalNoDisponible();
-    this.saldoTotal=this.transaccion.obtenerSaldo();
-    this.movimientos=this.transaccion.obtenerMovimientos();
+  ngOnInit() {
+    this.totalNoDisponible = this.transaccion.totalNoDisponible();
+    this.saldoTotal = this.transaccion.obtenerSaldo();
+    this.movimientos = this.transaccion.obtenerMovimientos();
   }
 
   doRefresh(event) {
@@ -30,6 +33,25 @@ export class Tab3Page {
     }, 2000);
   }
 
+  async VerConcepto(transaccion: TransaccionI) {
+    console.log(transaccion.concepto);
+    const confirmacion = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Concepto',
+      subHeader: "",
+      message: transaccion.concepto=="" || transaccion.concepto==void(0)?"Salario":transaccion.concepto,
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'cancel',
+          cssClass: 'secondary',
+
+        }
+      ]
+    });
+
+    await confirmacion.present();
+  }
 
 
 
