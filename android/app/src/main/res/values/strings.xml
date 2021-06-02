@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">Fondos</string>
-    <string name="title_activity_main">Fondos</string>
-    <string name="package_name">com.kadecktech.app</string>
-    <string name="custom_url_scheme">com.kadecktech.app</string>
-</resources>
