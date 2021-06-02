@@ -7,6 +7,7 @@
 <ion-content>
   
   <ion-button expand="full" color="primary" (click)="VerAhorroEspecial()">Ver Ahorro especial</ion-button>
+  <ion-button expand="full" color="primary" (click)="EditarAhorroEspecial()">Editar Ahorro Especial</ion-button>
   <ion-button expand="full" color="primary" (click)="EditarDescuento()">Editar descuento</ion-button>
   <ion-button expand="full" color="success" (click)="exportar()">Exportar</ion-button>
   <ion-button expand="full" color="success" (click)="Importar()">Importar</ion-button>
@@ -28,6 +29,11 @@
   <ion-item id="EditarDescuento" class="ion-hide">
     <ion-input placeholder="Cantidad a descontar" type="number" [(ngModel)]="aDescontar"></ion-input>
     <ion-button (click)="GuardarDesucento()">Guardar </ion-button>
+  </ion-item>
+
+  <ion-item id="EditarAhorroEspecial" class="ion-hide">
+    <ion-input placeholder="Cantidad a descontar" type="number" [(ngModel)]="aModificar"></ion-input>
+    <ion-button color="danger" (click)="DescontarAhorro()">Descontar </ion-button>
   </ion-item>
 
 </ion-content>

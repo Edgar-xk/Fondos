@@ -33,6 +33,7 @@ export class Tab3Page {
     }, 2000);
   }
 
+  
   async VerConcepto(transaccion: TransaccionI) {
     console.log(transaccion.concepto);
     const confirmacion = await this.alertController.create({

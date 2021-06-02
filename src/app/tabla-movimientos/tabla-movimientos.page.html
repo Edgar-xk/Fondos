@@ -1,0 +1,36 @@
+<ion-header>
+  
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab5"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Tabla Movimientos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  
+  <ion-virtual-scroll [items]="data" approxItemHeight="1000px" >
+  
+    <ion-item *virtualItem="let item">
+      <ion-card class="cardGasto">
+        <ion-card-header>
+          
+          <ion-card-title>Concepto:{{item.concepto}}</ion-card-title>
+        </ion-card-header>
+      
+        <ion-card-content>
+          <ion-label>FECHA: {{item.fecha}}</ion-label>
+          <ion-label>DEPOSITO: ${{item.deposito}}</ion-label>
+          <ion-button expand="full" color="primary" (click)="Detalles(item)">Detalles</ion-button>
+        </ion-card-content>
+      </ion-card>
+      
+     
+    </ion-item>
+  
+  </ion-virtual-scroll>
+</ion-content>

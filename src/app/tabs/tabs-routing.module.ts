@@ -24,6 +24,18 @@ const routes: Routes = [
         loadChildren: () => import('../modificaciones/modificaciones.module').then(m => m.ModificacionesPageModule)
       },
       {
+        path: 'tab5',
+        loadChildren: () => import('../tab4/tab4.module').then(m=>m.Tab4PageModule)
+      },
+      {
+        path: 'TablaMovimientos',
+        loadChildren: () => import('../tabla-movimientos/tabla-movimientos.module').then(m=>m.TablaMovimientosPageModule)
+      },
+      {
+        path: 'detalles-movimiento',
+        loadChildren: () => import('../detalles-movimiento/detalles-movimiento.module').then( m => m.DetallesMovimientoPageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/tab1',
         pathMatch: 'full'

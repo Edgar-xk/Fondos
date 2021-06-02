@@ -13,6 +13,18 @@ const routes: Routes = [
   {
     path: 'import-modal',
     loadChildren: () => import('./import-modal/import-modal.module').then( m => m.ImportModalPageModule)
+  },
+  {
+    path: 'tab4',
+    loadChildren: () => import('./tab4/tab4.module').then( m => m.Tab4PageModule)
+  },
+  {
+    path: 'tabla-movimientos',
+    loadChildren: () => import('./tabla-movimientos/tabla-movimientos.module').then( m => m.TablaMovimientosPageModule)
+  },
+  {
+    path: 'detalles-movimiento',
+    loadChildren: () => import('./detalles-movimiento/detalles-movimiento.module').then( m => m.DetallesMovimientoPageModule)
   }
 ];
 @NgModule({

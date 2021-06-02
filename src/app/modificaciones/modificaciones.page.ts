@@ -13,6 +13,7 @@ import { TransaccionI } from '../transaccion-i';
 })
 export class ModificacionesPage implements OnInit {
   aEliminar;
+  aModificar:string;
   aDescontar:number;
   Movimiento: TransaccionI;
   constructor(public alertController: AlertController,
@@ -24,6 +25,17 @@ export class ModificacionesPage implements OnInit {
     this.Movimiento = this.transaccion.obtenerMovimiento();
   }
 
+  EditarAhorroEspecial(){
+    document.getElementById("EditarAhorroEspecial").classList.toggle("ion-hide");
+    
+    
+  }
+  DescontarAhorro(){
+    
+    this.transaccion.DescontarAhorroEspecial(Number.parseInt(this.aModificar));
+    document.getElementById("EditarAhorroEspecial").classList.toggle("ion-hide");
+    this.aModificar="";
+  }
   async deleteAll() {
 
     const alert = await this.alertController.create({

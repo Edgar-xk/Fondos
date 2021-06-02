@@ -63,7 +63,9 @@ export class Tab2Page {
       this.gasto = this.cantidad;
       if(this.abono!=0 && this.gasto<this.abono){
         
-        this.texto = "Se quitaron $" + this.gasto + "en concepto de "+(this.concepto!=""?this.concepto:"Otros");
+        this.concepto==""||this.concepto==void(0)?this.concepto="Otros":"";
+        console.log(this.concepto);
+        this.texto = "Se quitaron $" + this.gasto + "en concepto de "+this.concepto;
 
         this.concepto==""?this.concepto="Otros":console.log(this.concepto);
 

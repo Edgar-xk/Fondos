@@ -4,6 +4,7 @@ export interface TransaccionI {
     deposito: number,
     NoDisponible: number,
     gastos: [{
+        fecha:string,
         concepto: string,
         monto: number
     }],

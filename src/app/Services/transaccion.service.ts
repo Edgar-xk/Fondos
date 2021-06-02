@@ -15,9 +15,10 @@ export class TransaccionService {
     let aDescontar:number=localStorage.getItem("aDescontar")!=null?parseInt(localStorage.getItem("aDescontar")):1000;
     console.clear();
     let fechaS = new Date();
-    let fechaFormat: string = fechaS.getDay() + "/" + fechaS.getMonth() + "/" + fechaS.getFullYear();
-    // console.log(fechaFormat);
-
+    let fechaFormat: string = fechaS.getDate() + "/" + (fechaS.getMonth()+1) + "/" + fechaS.getFullYear();
+    console.log(fechaS);
+     console.log(fechaFormat);
+ 
     let abonos: TransaccionI[] = this.obtenerMovimientos()
     let saldoSuma;
     let saldoNuevo = descuento ? abono - aDescontar : abono;
@@ -32,9 +33,14 @@ export class TransaccionService {
     }
 
 
+    if(concepto==""||concepto==null){
+      concepto="Salario";
+    }
 
     let abonoNuevo: TransaccionIN = {
       concepto:concepto,
+      año:fechaS.getFullYear(),
+      mes:(fechaS.getMonth()+1),
       fecha: fechaFormat,
       deposito: abono,
       NoDisponible: descuento ? aDescontar : 0,
@@ -81,7 +87,10 @@ export class TransaccionService {
     console.log(movimientos);
     let movimientoUltimo: TransaccionI = movimientos[movimientos.length - 1];
     console.log(movimientoUltimo);
+    let fechaS = new Date();
+    let fechaFormat: string = fechaS.getDate() + "/" + (fechaS.getMonth()+1) + "/" + fechaS.getFullYear();
     movimientoUltimo.gastos.push({
+      fecha:fechaFormat,
       concepto: concepto,
       monto: gasto
     });
