@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 import { TransaccionService } from '../Services/transaccion.service';
 import { TransaccionIN } from '../transaccion-in';
 
@@ -9,7 +10,7 @@ import { TransaccionIN } from '../transaccion-in';
 })
 export class TablaMovimientosPage implements OnInit {
 
-  constructor(public transaccion:TransaccionService) {
+  constructor(public transaccion:TransaccionService,public alertController: AlertController) {
 
   }
 
@@ -20,9 +21,10 @@ export class TablaMovimientosPage implements OnInit {
  concepto:string;
  fechaD:string;
  saldo:number;
+ totalNoDisponible:number
  ngOnInit() {
    this.data=this.transaccion.obtenerMovimientos();
-   
+   this.totalNoDisponible = this.transaccion.totalNoDisponible();
  }
   doRefresh(event) {
     console.log('Begin async operation');
@@ -36,5 +38,24 @@ export class TablaMovimientosPage implements OnInit {
   Detalles(item){
     localStorage.setItem("DetalleDeposito",JSON.stringify(item));
     window.location.href="/tabs/detalles-movimiento";
+  }
+  async VerNoDisponible(){
+    
+    const confirmacion = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'No Disponible',
+      subHeader: "",
+      message: "$"+this.totalNoDisponible,
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'cancel',
+          cssClass: 'secondary',
+
+        }
+      ]
+    });
+
+    await confirmacion.present();
   }
 }

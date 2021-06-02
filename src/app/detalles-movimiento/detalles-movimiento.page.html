@@ -6,6 +6,12 @@
       Movimientos
       <div id="InfMovimiento">Inf: ${{monto}} - {{concepto}} - {{fechaD}}</div>
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button tab="tab5" slot="end"  (click)="VerNoDisponible()">
+        <ion-icon name="cash-outline"></ion-icon>
+        
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
   <ion-item id="SaldoInf">
     <ion-label>Saldo: ${{saldo}}</ion-label>
