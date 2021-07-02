@@ -88,8 +88,8 @@ export class ModificacionesPage implements OnInit {
             {
               text: 'Yes',
               handler: () => {
-                //console.log(dataReturned.data.data);
-                localStorage.setItem("abonos", dataReturned.data.data);
+                //console.log(dataReturned.data);
+                localStorage.setItem("abonos", JSON.stringify(dataReturned.data.data));
               }
             }
           ]
@@ -191,6 +191,40 @@ export class ModificacionesPage implements OnInit {
     
     localStorage.setItem("aDescontar",JSON.stringify(this.aDescontar));
     this.aDescontar=0;
+  }
+
+  EliminarUltimoDeposito(){
+    
+    this.Movimiento = this.transaccion.obtenerMovimiento();
+  }
+  Eliminar1() {
+    this.Movimiento = this.transaccion.obtenerMovimiento();
+    let movimientos=this.transaccion.obtenerMovimientos();
+
+   /*  console.log(movimientos);
+    console.log(movimientos.length);
+    
+    console.log( movimientos[movimientos.length - 1].deposito);
+    console.log( movimientos[movimientos.length - 1].NoDisponible);
+    console.log();
+    //console.log(movimientos[movimientos.length - 1].saldo);
+ */
+    movimientos[movimientos.length - 2].saldo=movimientos[movimientos.length - 1].saldo-(movimientos[movimientos.length - 1].deposito- movimientos[movimientos.length - 1].NoDisponible);
+    
+    console.log( movimientos[movimientos.length - 2].saldo);
+    
+    movimientos.splice((movimientos.length-1),1);
+    console.log(movimientos);
+    this.transaccion.EliminarUltimoDeposito(movimientos);
+    /*
+    if(this.Movimiento.gastos[this.aEliminar].concepto=="AhorroEspecial"){
+      this.transaccion.DescontarAhorroEspecial(this.Movimiento.gastos[this.aEliminar].monto);
+    }
+    this.Movimiento.saldo = this.Movimiento.saldo + this.Movimiento.gastos[this.aEliminar].monto;
+    this.Movimiento.gastos.splice(this.aEliminar, 1);
+
+    this.transaccion.EliminarMovimiento(this.Movimiento);*/
+   // document.getElementById("EliminarMovimiento1").classList.toggle("ion-hide");
   }
 
 }

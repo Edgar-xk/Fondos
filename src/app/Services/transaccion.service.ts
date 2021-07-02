@@ -157,5 +157,8 @@ export class TransaccionService {
       
     }
   }
+  EliminarUltimoDeposito(movimientos:TransaccionI){
+    localStorage.setItem("abonos",JSON.stringify(movimientos));
+  }
 
 }
